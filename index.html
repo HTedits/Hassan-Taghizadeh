@@ -117,6 +117,17 @@
       transform-origin: center;
       transition: height 0.2s ease, background-color 0.2s ease;
     }
+
+    /* Smooth Language Cross-Fade */
+    #pageTransitionWrapper {
+      transition: opacity 0.22s cubic-bezier(0.22, 1, 0.36, 1), transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+
+    #pageTransitionWrapper.lang-switching {
+      opacity: 0.12;
+      transform: translateY(4px);
+    }
   </style>
 </head>
 <body class="font-sans antialiased selection:bg-brand-600/40 selection:text-white relative">
@@ -137,6 +148,7 @@
     <span id="toastMessage">در حافظه کپی شد</span>
   </div>
 
+  <div id="pageTransitionWrapper">
   <!-- Sticky Navigation Bar -->
   <header class="sticky top-0 z-40 w-full bg-obsidian-950/80 backdrop-blur-xl border-b border-white/[0.07]">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-3">
@@ -275,7 +287,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span data-i18n="heroPrimaryCta">مشاهده نمونه‌کارها و فایل‌های اصلی در گوگل درایو</span>
+              <span data-i18n="heroPrimaryCta">آرشیو کامل در گوگل درایو</span>
               <svg class="w-3.5 h-3.5 opacity-85 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
@@ -284,7 +296,7 @@
             <a
               href="#contact"
               data-i18n="heroSecondaryCta"
-              class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-sm font-semibold bg-white/[0.04] hover:bg-white/[0.08] text-white border border-white/10 transition"
+              class="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl text-sm font-semibold bg-white/[0.04] hover:bg-white/[0.08] text-zinc-200 border border-white/10 transition"
             >
               ارتباط و سفارش پروژه
             </a>
@@ -292,7 +304,7 @@
             <button
               type="button"
               onclick="openBioEditorModal()"
-              class="inline-flex items-center justify-center gap-1.5 px-4 py-3.5 rounded-2xl text-xs font-medium text-zinc-400 hover:text-brand-300 hover:bg-white/[0.03] border border-transparent hover:border-white/10 transition cursor-pointer"
+              class="inline-flex items-center justify-center gap-1.5 px-3.5 py-3.5 rounded-2xl text-xs font-medium text-zinc-400 hover:text-brand-300 hover:bg-white/[0.03] border border-transparent hover:border-white/10 transition cursor-pointer"
             >
               <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -722,13 +734,13 @@
               href="https://drive.google.com/drive/folders/1cL2bBRByJIbJAJJCkclyeZa-DS50RTVg?usp=share_link"
               target="_blank"
               rel="noopener noreferrer"
-              class="p-4 rounded-2xl bg-obsidian-950/60 hover:bg-obsidian-900 border border-white/[0.08] hover:border-brand-500/45 flex items-center justify-between gap-3 transition group"
+              class="w-full p-4 rounded-2xl bg-obsidian-950/60 hover:bg-obsidian-900 border border-white/[0.08] hover:border-brand-500/50 flex items-center justify-between gap-3 transition group"
             >
               <div>
                 <span data-i18n="contactDriveArchiveLabel" class="block text-[11px] font-medium text-zinc-400">آرشیو نمونه‌کارها</span>
-                <span data-i18n="contactDriveArchiveTitle" class="block text-sm font-semibold text-zinc-200 group-hover:text-brand-300 transition">پوشه گوگل درایو (کیفیت اصلی)</span>
+                <span data-i18n="contactDriveArchiveTitle" class="block text-sm font-semibold text-zinc-100 group-hover:text-brand-300 transition">پوشه گوگل درایو (کیفیت اصلی)</span>
               </div>
-              <span data-i18n="contactDriveArchiveArrow" class="text-xs font-medium text-brand-400 group-hover:text-white transition">مشاهده ←</span>
+              <span data-i18n="contactDriveArchiveArrow" class="text-xs font-semibold text-brand-400 shrink-0">مشاهده ←</span>
             </a>
           </div>
         </div>
@@ -737,7 +749,7 @@
 
   </main>
 
-  <!-- Minimal Footer -->
+  <!-- Minimal Bilingual Footer -->
   <footer class="relative z-10 border-t border-white/[0.06] py-8">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
       <div class="flex items-center gap-2.5">
@@ -749,7 +761,9 @@
       <div class="flex flex-wrap items-center justify-center gap-4">
         <a href="https://drive.google.com/drive/folders/1cL2bBRByJIbJAJJCkclyeZa-DS50RTVg?usp=share_link" target="_blank" rel="noopener noreferrer" data-i18n="footerDrive" class="text-brand-300 hover:text-white transition">گوگل درایو</a>
         <span>•</span>
-        <a href="https://t.me/noah_xcx" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-brand-300 transition"><span data-i18n="footerTelegram">تلگرام</span> (<span dir="ltr">@noah_xcx</span>)</a>
+        <a href="https://t.me/noah_xcx" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-brand-300 transition">
+          <span data-i18n="footerTelegram">تلگرام</span> (<span dir="ltr" class="font-mono">@noah_xcx</span>)
+        </a>
         <span>•</span>
         <a href="mailto:hesentaqi@gmail.com" dir="ltr" class="text-zinc-400 hover:text-brand-300 font-mono transition">hesentaqi@gmail.com</a>
         <span>•</span>
@@ -757,6 +771,7 @@
       </div>
     </div>
   </footer>
+  </div>
 
   <!-- Modal: Edit Personal Bio -->
   <div
@@ -907,6 +922,7 @@
     let activePhaseKey = 'hook';
     let customProjects = [];
     let toastTimer = null;
+    let langTransitionTimer = null;
 
     // Comprehensive Bilingual Dictionary (Persian FA & English EN)
     const I18N = {
@@ -925,7 +941,7 @@
         heroSubtitle: 'تدوین‌گر خلاق ویدیوهای کوتاه، موشن‌گرافیست و طراح ریتم بصری',
         heroDefaultBio:
           'تدوینگر خلاق با تمرکز اختصاصی بر ساخت و ویرایش ویدیوهای کوتاه برای اینستاگرام ریلز، یوتیوب شورتس و تیک‌تاک. توانمند در خلق قلاب‌های آغازین (Hook) جذاب در ثانیه‌های نخست، کنترل ریتم تند و پویای ویدیو، کات‌های هماهنگ با ضرباهنگ و طراحی زیرنویس‌های داینامیک و تعاملی به هدف افزایش نرخ نگهداشت مخاطب (Retention)، ارتقای انگیجمنت و رشد بازدیدها.',
-        heroPrimaryCta: 'مشاهده نمونه‌کارها و فایل‌های اصلی در گوگل درایو',
+        heroPrimaryCta: 'آرشیو کامل در گوگل درایو',
         heroSecondaryCta: 'ارتباط و سفارش پروژه',
         heroEditBioBtn: 'ویرایش معرفی‌نامه',
 
@@ -940,11 +956,11 @@
         phaseBtnMotion: '۳. موشن گرافیک و زیرنویس تعاملی',
         phaseBtnSound: '۴. طراحی صدا و جمع‌بندی',
         trackVideoLabel: 'لایه ویدیو و موشن',
-        trackAudioLabel: 'لایه صدا و افکت‌های صوتی',
         trackSegHook: 'هوک ۰–۳ث',
         trackSegCuts: 'کات ریتمیک',
         trackSegMotion: 'موشن و زیرنویس',
         trackSegOutro: 'پایان',
+        trackAudioLabel: 'لایه صدا و افکت‌های صوتی',
 
         aboutKicker: 'درباره من و سوابق تحصیلی',
         aboutHeading: 'ترکیب نگاه گرافیکی با ریتم مدرن تدوین.',
@@ -1055,29 +1071,29 @@
         heroSubtitle: 'Creative Short-Form Video Editor, Motion Designer & Visual Rhythm Specialist',
         heroDefaultBio:
           'Creative video editor dedicated to crafting high-retention short-form content for Instagram Reels, YouTube Shorts, and TikTok. Specialized in designing scroll-stopping opening hooks in the first seconds, dynamic fast-paced rhythm, beat-matched cuts, and interactive kinetic subtitles engineered to maximize audience retention, engagement, and organic reach.',
-        heroPrimaryCta: 'View Full Showreel & Raw Samples on Google Drive',
+        heroPrimaryCta: 'Google Drive Archive',
         heroSecondaryCta: 'Get in Touch',
         heroEditBioBtn: 'Edit Bio',
 
         tagAe: 'After Effects Specialist',
-        tagSubs: 'Dynamic & Interactive Subtitles',
+        tagSubs: 'Dynamic & Interactive Captions',
         tagSound: 'Sound Design & SFX',
         tagColor: 'Color Grading & Lighting',
 
-        timelineHeader: 'Retention Engineering Blueprint (00:00 — 01:00)',
+        timelineHeader: 'Retention Engineering Structure (00:00 – 01:00)',
         phaseBtnHook: '1. Opening Hook (0–3s)',
-        phaseBtnPacing: '2. Dynamic Pacing & Cuts',
-        phaseBtnMotion: '3. Motion & Kinetic Captions',
-        phaseBtnSound: '4. Sound Design & Outro',
-        trackVideoLabel: 'Video & Motion Layer',
-        trackAudioLabel: 'Audio & SFX Layer',
+        phaseBtnPacing: '2. Beat-Matched Rhythm & Cuts',
+        phaseBtnMotion: '3. Motion Graphics & Captions',
+        phaseBtnSound: '4. Sound Design & Finish',
+        trackVideoLabel: 'Video & Motion Track',
         trackSegHook: 'Hook 0–3s',
-        trackSegCuts: 'Rhythmic Cuts',
+        trackSegCuts: 'Rhythmic Cut',
         trackSegMotion: 'Motion & Captions',
         trackSegOutro: 'Outro',
+        trackAudioLabel: 'Audio & SFX Track',
 
-        aboutKicker: 'About & Credentials',
-        aboutHeading: 'Blending graphic composition with high-velocity editing.',
+        aboutKicker: 'About & Academic Background',
+        aboutHeading: 'Combining graphic design vision with modern editing rhythm.',
         aboutLead: 'Combining visual design fundamentals with modern post-production craft to build impactful short-form videos.',
         credCollabLabel: 'Featured Collaboration',
         credCollabTitle: 'Worked with Bezangah Ahsan Ansari',
@@ -1319,8 +1335,12 @@
 
       const htmlEl = document.documentElement;
       htmlEl.setAttribute('lang', currentLang);
-      htmlEl.setAttribute('dir', currentLang === 'fa' ? 'rtl' : 'ltr');
+      // Keep structural grid/header positions anchored while each text block gets proper script direction
+      htmlEl.setAttribute('dir', 'rtl');
       document.title = t('pageTitle');
+
+      const textDir = currentLang === 'fa' ? 'rtl' : 'ltr';
+      const textAlignClass = currentLang === 'fa' ? 'text-right' : 'text-left';
 
       // Update Toggle Pill Active Visuals
       const pillFa = document.getElementById('langPillFa');
@@ -1335,7 +1355,7 @@
         }
       }
 
-      // Update all data-i18n text nodes
+      // Update all data-i18n text nodes with script direction without shifting layout columns
       document.querySelectorAll('[data-i18n]').forEach((el) => {
         const key = el.getAttribute('data-i18n');
         const val = t(key);
@@ -1344,6 +1364,16 @@
         } else {
           el.textContent = val;
         }
+
+        if (!el.hasAttribute('dir') || el.dataset.autoDir === 'true') {
+          el.setAttribute('dir', textDir);
+          el.dataset.autoDir = 'true';
+        }
+      });
+
+      // Apply directional flow to main text containers while keeping grid cards stationary
+      document.querySelectorAll('main section, footer, #bioModal, #projectModal').forEach((block) => {
+        block.setAttribute('dir', textDir);
       });
 
       // Update Hero Bio (use saved custom bio for that language if present, otherwise default)
@@ -1352,15 +1382,30 @@
       try {
         savedBio = localStorage.getItem(bioStorageKey) || '';
       } catch {}
-      document.getElementById('heroBioDisplay').textContent = savedBio.trim() || t('heroDefaultBio');
+      const heroBioEl = document.getElementById('heroBioDisplay');
+      heroBioEl.textContent = savedBio.trim() || t('heroDefaultBio');
+      heroBioEl.setAttribute('dir', textDir);
 
-      // Update Modal Placeholders
+      // Update Modal Placeholders & Textarea direction
       const projTagInput = document.getElementById('projTag');
       const projTitleInput = document.getElementById('projTitle');
       const projDescInput = document.getElementById('projDesc');
-      if (projTagInput) projTagInput.placeholder = t('projModalTagPlaceholder');
-      if (projTitleInput) projTitleInput.placeholder = t('projModalNamePlaceholder');
-      if (projDescInput) projDescInput.placeholder = t('projModalDescPlaceholder');
+      const bioTextarea = document.getElementById('bioTextarea');
+      if (projTagInput) {
+        projTagInput.placeholder = t('projModalTagPlaceholder');
+        projTagInput.setAttribute('dir', textDir);
+      }
+      if (projTitleInput) {
+        projTitleInput.placeholder = t('projModalNamePlaceholder');
+        projTitleInput.setAttribute('dir', textDir);
+      }
+      if (projDescInput) {
+        projDescInput.placeholder = t('projModalDescPlaceholder');
+        projDescInput.setAttribute('dir', textDir);
+      }
+      if (bioTextarea) {
+        bioTextarea.setAttribute('dir', textDir);
+      }
 
       // Refresh Interactive Timeline & Showcase Cards
       selectTimelinePhase(activePhaseKey);
@@ -1377,17 +1422,32 @@
 
     function toggleLanguage() {
       const nextLang = currentLang === 'fa' ? 'en' : 'fa';
-      applyLanguage(nextLang, true);
+      const wrapper = document.getElementById('pageTransitionWrapper');
+
+      if (!wrapper) {
+        applyLanguage(nextLang, true);
+        return;
+      }
+
+      if (langTransitionTimer) clearTimeout(langTransitionTimer);
+      wrapper.classList.add('lang-switching');
+
+      langTransitionTimer = setTimeout(() => {
+        applyLanguage(nextLang, true);
+        requestAnimationFrame(() => {
+          wrapper.classList.remove('lang-switching');
+        });
+      }, 170);
     }
 
+    // Interactive Timeline Preview Handler
     function selectTimelinePhase(phaseKey) {
-      activePhaseKey = phaseKey;
-      const phase = TIMELINE_PHASES[phaseKey];
-      if (!phase) return;
+      const phaseObj = TIMELINE_PHASES[phaseKey] || TIMELINE_PHASES.hook;
+      activePhaseKey = phaseKey in TIMELINE_PHASES ? phaseKey : 'hook';
 
-      const localized = phase[currentLang] || phase.fa;
+      const localized = phaseObj[currentLang] || phaseObj.fa;
+      document.getElementById('timecodeDisplay').textContent = phaseObj.timecode;
       document.getElementById('activePhaseBadge').textContent = localized.badge;
-      document.getElementById('timecodeDisplay').textContent = phase.timecode;
       document.getElementById('phaseDescription').textContent = localized.desc;
 
       document.querySelectorAll('.phase-btn').forEach((btn) => {
@@ -1395,13 +1455,13 @@
         btn.classList.add('bg-white/[0.03]', 'border-white/10', 'text-zinc-400');
       });
 
-      const activeBtn = document.getElementById(`phaseBtn-${phaseKey}`);
+      const activeBtn = document.getElementById(`phaseBtn-${activePhaseKey}`);
       if (activeBtn) {
         activeBtn.classList.remove('bg-white/[0.03]', 'border-white/10', 'text-zinc-400');
         activeBtn.classList.add('bg-brand-600/30', 'border-brand-400/50', 'text-white');
       }
 
-      renderWaveform(phaseKey);
+      renderWaveform(activePhaseKey);
     }
 
     function renderWaveform(seed = 'hook') {
@@ -1409,10 +1469,10 @@
       if (!container) return;
 
       const heightsMap = {
-        hook: [40, 88, 96, 62, 48, 92, 76, 42, 66, 82, 52, 72, 90, 56, 44, 76, 86, 60, 46, 70, 50, 80, 65, 42],
-        pacing: [62, 76, 52, 92, 86, 46, 95, 72, 58, 88, 94, 62, 50, 84, 78, 54, 90, 68, 74, 86, 58, 72, 80, 52],
-        motion: [55, 70, 84, 78, 64, 90, 82, 60, 74, 88, 70, 80, 92, 66, 58, 84, 76, 68, 82, 90, 64, 74, 68, 50],
-        sound: [50, 65, 78, 82, 70, 88, 92, 80, 68, 75, 85, 90, 76, 64, 82, 94, 86, 72, 66, 80, 88, 74, 62, 54],
+        hook: [35, 88, 96, 62, 48, 92, 76, 42, 68, 84, 52, 72, 90, 56, 42, 78, 86, 60, 46, 72, 50, 82, 66, 42],
+        pacing: [62, 78, 52, 92, 86, 46, 95, 72, 56, 88, 92, 60, 48, 84, 76, 52, 90, 68, 74, 86, 58, 72, 80, 52],
+        motion: [48, 72, 84, 66, 90, 78, 54, 86, 92, 64, 50, 82, 88, 60, 74, 94, 70, 56, 84, 78, 62, 88, 72, 48],
+        sound: [52, 68, 80, 84, 72, 88, 94, 82, 70, 76, 86, 92, 78, 66, 84, 96, 88, 74, 68, 82, 90, 76, 64, 56],
       };
 
       const bars = heightsMap[seed] || heightsMap.hook;
@@ -1428,7 +1488,7 @@
         .join('');
     }
 
-    // Toast Feedback
+    // Toast Notification
     function showToast(msg) {
       const banner = document.getElementById('toastBanner');
       const text = document.getElementById('toastMessage');
@@ -1445,7 +1505,7 @@
       }, 3000);
     }
 
-    // Copy helpers with execCommand fallback
+    // Clipboard Helpers
     function copyText(value, successMsg) {
       const temp = document.createElement('textarea');
       temp.value = value;
@@ -1496,6 +1556,7 @@
       }
     }
 
+    // Load Saved Language & Custom Projects
     function loadSavedData() {
       try {
         const savedLang = localStorage.getItem(STORAGE_LANG_KEY);
@@ -1513,35 +1574,36 @@
       }
     }
 
+    // Render Bilingual Showcase Cards
     function renderProjects() {
       const grid = document.getElementById('projectsGrid');
       if (!grid) return;
 
-      const localizedDefaults = DEFAULT_PROJECTS.map((item) => {
-        const copy = item[currentLang] || item.fa;
+      const normalizedDefaults = DEFAULT_PROJECTS.map((item) => {
+        const localized = item[currentLang] || item.fa;
         return {
           id: item.id,
-          tag: copy.tag,
-          title: copy.title,
-          desc: copy.desc,
-          ctaLabel: copy.ctaLabel,
-          url: item.url,
           isDefault: true,
           isFeatured: Boolean(item.isFeatured),
+          url: item.url,
+          tag: localized.tag,
+          title: localized.title,
+          desc: localized.desc,
+          ctaLabel: localized.ctaLabel,
         };
       });
 
-      const allItems = [...customProjects, ...localizedDefaults];
+      const allItems = [...customProjects, ...normalizedDefaults];
 
       grid.innerHTML = allItems
         .map(
           (item) => `
           <article class="glass-card rounded-2xl p-6 flex flex-col justify-between gap-5 ${
-            item.isFeatured ? 'md:col-span-2 border-brand-500/45 bg-gradient-to-bl from-brand-900/20 via-white/[0.03] to-transparent' : ''
+            item.isFeatured ? 'border-brand-500/45 bg-gradient-to-br from-brand-900/20 via-white/[0.03] to-transparent' : ''
           }">
             <div class="space-y-3">
               <div class="flex items-center justify-between gap-2">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium ${
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium ${
                   item.isFeatured
                     ? 'bg-brand-500/25 text-brand-200 border border-brand-400/40'
                     : 'bg-brand-500/15 text-brand-300 border border-brand-500/25'
@@ -1552,11 +1614,11 @@
                 ${
                   !item.isDefault
                     ? `<button type="button" onclick="deleteCustomProject('${escapeHtml(item.id)}')" class="text-xs font-medium text-zinc-500 hover:text-red-400 transition cursor-pointer">${escapeHtml(t('cardDelete'))}</button>`
-                    : `<span dir="ltr" class="text-[11px] font-mono text-zinc-500">${item.isFeatured ? 'GOOGLE DRIVE' : '09:16'}</span>`
+                    : `<span dir="ltr" class="text-[11px] font-mono text-zinc-500">${item.isFeatured ? 'DRIVE' : '09:16'}</span>`
                 }
               </div>
 
-              <h3 class="font-display font-bold text-lg sm:text-xl text-white leading-snug">
+              <h3 class="font-display font-bold text-lg text-white leading-snug">
                 ${escapeHtml(item.title)}
               </h3>
 
@@ -1586,7 +1648,7 @@
         .join('');
     }
 
-    // Bio Editor Modal Handlers (Language-Aware)
+    // Bio Editor Modal Handlers
     function openBioEditorModal() {
       const modal = document.getElementById('bioModal');
       const textarea = document.getElementById('bioTextarea');
