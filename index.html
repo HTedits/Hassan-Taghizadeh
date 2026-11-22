@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hassan Taghizadeh — Short-Form Video Editor &amp; Motion Designer</title>
+  <!-- Load Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Load Google Fonts: Inter & Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            obsidian: {
+              950: '#07070b',
+              900: '#0c0c13',
+              850: '#11111b',
+              800: '#161624',
+            },
+            brand: {
+              300: '#d8b4fe',
+              400: '#c084fc',
+              500: '#a855f7',
+              600: '#9333ea',
+              700: '#7c3aed',
+              800: '#6b21a8',
+              900: '#4c1d95',
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* Base Dark Obsidian Canvas & Subtle Grid */
+    body {
+      background-color: #07070b;
+      color: #f4f4f8;
+      overflow-x: hidden;
+    }
+
+    .bg-grid-pattern {
+      background-size: 44px 44px;
+      background-image: 
+        linear-gradient(to right, rgba(168, 85, 247, 0.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(168, 85, 247, 0.045) 1px, transparent 1px);
+    }
+
+    /* Ambient Purple Glow Orbs */
+    .ambient-glow-1 {
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.22) 0%, rgba(124, 58, 237, 0) 70%);
+    }
+    .ambient-glow-2 {
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.14) 0%, rgba(168, 85, 247, 0) 70%);
+    }
+
+    /* Sleek Glassmorphism Surfaces */
+    .glass-card {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.015) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .glass-card:hover {
+      border-color: rgba(168, 85, 247, 0.42);
+      box-shadow: 0 20px 45px -18px rgba(124, 58, 237, 0.28);
+      transform: translateY(-2px);
+    }
+
+    /* Gradient Typography */
+    .text-gradient-purple {
+      background: linear-gradient(135deg, #ffffff 0%, #e9d5ff 48%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #07070b;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #27223a;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #7c3aed;
+    }
+
+    /* Waveform & Playhead Animations */
+    @keyframes pulse-bar {
+      0%, 100% { transform: scaleY(0.65); }
+      50% { transform: scaleY(1); }
+    }
+    .wave-bar {
+      transform-origin: center;
+      transition: height 0.2s ease, background-color 0.2s ease;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased selection:bg-brand-600/40 selection:text-white relative">
+
+  <!-- Background Grid & Ambient Radial Glows -->
+  <div class="fixed inset-0 bg-grid-pattern pointer-events-none z-0"></div>
+  <div class="fixed -top-40 -left-32 w-[540px] h-[540px] rounded-full ambient-glow-1 pointer-events-none z-0"></div>
+  <div class="fixed top-1/3 -right-40 w-[520px] h-[520px] rounded-full ambient-glow-2 pointer-events-none z-0"></div>
+
+  <!-- Toast Notification Banner (Replaces browser alert/confirm) -->
+  <div
+    id="toastBanner"
+    class="fixed bottom-5 right-5 z-50 hidden items-center gap-3 px-4 py-3 rounded-2xl bg-obsidian-800/95 border border-brand-500/40 text-sm text-white shadow-2xl backdrop-blur-md"
+    role="status"
+    aria-live="polite"
+  >
+    <span class="w-2 h-2 rounded-full bg-brand-400 animate-ping"></span>
+    <span id="toastMessage">Copied to clipboard</span>
+  </div>
+
+  <!-- Sticky Navigation Bar -->
+  <header class="sticky top-0 z-40 w-full bg-obsidian-950/80 backdrop-blur-xl border-b border-white/[0.07]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
+      <!-- Brand Identity: Custom SVG HT Monogram + Hassan Taghizadeh -->
+      <a href="#top" class="flex items-center gap-3.5 group focus:outline-none">
+        <!-- Custom SVG Logo matching #4 HT Monogram with film perforations & diagonal timeline slash -->
+        <div class="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-white/[0.03] border border-white/10 group-hover:border-brand-500/50 flex items-center justify-center p-1.5 transition">
+          <svg viewBox="0 0 120 100" class="w-full h-full overflow-visible" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="HT Logo">
+            <defs>
+              <linearGradient id="htPurpleGrad" x1="10" y1="15" x2="110" y2="85" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#581c87" />
+                <stop offset="50%" stop-color="#7c3aed" />
+                <stop offset="100%" stop-color="#a855f7" />
+              </linearGradient>
+              <linearGradient id="htSlashGrad" x1="30" y1="90" x2="95" y2="10" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#9333ea" />
+                <stop offset="100%" stop-color="#d8b4fe" />
+              </linearGradient>
+            </defs>
+            <!-- Left Vertical Stem of H -->
+            <rect x="12" y="16" width="16" height="68" rx="1.5" fill="url(#htPurpleGrad)" />
+            <!-- Right Stem of H (Upper & Lower) -->
+            <rect x="48" y="16" width="16" height="26" rx="1.5" fill="url(#htPurpleGrad)" />
+            <rect x="48" y="56" width="16" height="28" rx="1.5" fill="url(#htPurpleGrad)" />
+            <!-- Horizontal Filmstrip Bridge of H -->
+            <rect x="12" y="42" width="54" height="15" rx="1" fill="url(#htPurpleGrad)" />
+            <!-- Filmstrip Perforations -->
+            <rect x="18" y="46.5" width="3" height="6" rx="0.6" fill="#07070b" />
+            <rect x="26" y="46.5" width="3" height="6" rx="0.6" fill="#07070b" />
+            <rect x="34" y="46.5" width="3" height="6" rx="0.6" fill="#07070b" />
+            <rect x="42" y="46.5" width="3" height="6" rx="0.6" fill="#07070b" />
+            <rect x="50" y="46.5" width="3" height="6" rx="0.6" fill="#07070b" />
+            <!-- Top Bar & Vertical Stem of T (Split by Diagonal Timeline Cut) -->
+            <polygon points="56,16 86,16 74,28 56,28" fill="url(#htPurpleGrad)" />
+            <polygon points="94,16 108,16 108,28 82,28" fill="#a855f7" />
+            <polygon points="78,34 94,20 94,84 78,84" fill="url(#htPurpleGrad)" />
+            <!-- Sharp Diagonal Timeline Cut Line -->
+            <polygon points="34,92 98,8 100,10 38,93" fill="url(#htSlashGrad)" />
+          </svg>
+        </div>
+
+        <div class="leading-tight">
+          <span class="block font-display font-bold text-sm sm:text-base tracking-tight text-white">
+            Hassan Taghizadeh
+          </span>
+          <span class="block text-[11px] font-mono uppercase tracking-widest text-brand-400">
+            Short-Form Post
+          </span>
+        </div>
+      </a>
+
+      <!-- Center Nav Links -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-400" aria-label="Primary Navigation">
+        <a href="#about" class="hover:text-white transition">About</a>
+        <a href="#expertise" class="hover:text-white transition">Expertise</a>
+        <a href="#showcase" class="hover:text-white transition">Showcase</a>
+        <a href="#contact" class="hover:text-white transition">Contact</a>
+      </nav>
+
+      <!-- Right Status Pill & Quick Copy CTA -->
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <a
+          href="https://t.me/noah_xcx"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-700/15 hover:bg-brand-700/25 border border-brand-500/30 text-xs font-medium text-brand-300 transition"
+          title="Message on Telegram (@noah_xcx)"
+        >
+          <span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>
+          <span>@noah_xcx</span>
+        </a>
+
+        <button
+          type="button"
+          onclick="copyText('hesentaqi@gmail.com', 'Email copied: hesentaqi@gmail.com')"
+          class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-brand-700 hover:bg-brand-600 text-white shadow-lg shadow-brand-700/25 transition cursor-pointer"
+        >
+          <span>Copy Email</span>
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top" class="relative z-10">
+
+    <!-- HERO SECTION -->
+    <section class="max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-16 sm:pt-20 sm:pb-24">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+
+        <!-- Left Editorial Intro -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono uppercase tracking-wider text-brand-300">
+            <span class="w-1.5 h-1.5 rounded-full bg-brand-400"></span>
+            <span>Instagram Reels • YouTube Shorts • TikTok</span>
+          </div>
+
+          <h1 class="font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.08] text-gradient-purple">
+            High-Retention Edits Built to Stop the Scroll.
+          </h1>
+
+          <p id="heroBioDisplay" class="text-base sm:text-lg text-zinc-300/90 leading-relaxed max-w-2xl">
+            I’m <strong class="text-white font-semibold">Hassan Taghizadeh</strong>, a specialized short-form video editor and motion designer. I engineer magnetic opening hooks in the first seconds, dynamic beat-matched pacing, and interactive subtitles designed to maximize viewer retention, engagement, and organic reach.
+          </p>
+
+          <!-- Primary & Secondary Actions -->
+          <div class="flex flex-wrap items-center gap-3.5 pt-2">
+            <a
+              href="https://drive.google.com/drive/folders/1cL2bBRByJIbJAJJCkclyeZa-DS50RTVg?usp=share_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl text-sm font-semibold bg-gradient-to-r from-brand-700 to-brand-500 hover:from-brand-600 hover:to-brand-400 text-white shadow-xl shadow-brand-700/30 transition"
+            >
+              <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>View Full Showreel &amp; Samples on Google Drive</span>
+              <svg class="w-3.5 h-3.5 opacity-85 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+
+            <a
+              href="#contact"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-sm font-semibold bg-white/[0.04] hover:bg-white/[0.08] text-white border border-white/10 transition"
+            >
+              <span>Work With Me</span>
+            </a>
+
+            <button
+              type="button"
+              onclick="openBioEditorModal()"
+              class="inline-flex items-center justify-center gap-1.5 px-4 py-3.5 rounded-2xl text-xs font-mono text-zinc-400 hover:text-brand-300 hover:bg-white/[0.03] border border-transparent hover:border-white/10 transition cursor-pointer"
+              title="Customize your personal bio directly on this page"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+              <span>Edit Bio</span>
+            </button>
+          </div>
+
+          <!-- Compact Discipline Tags -->
+          <div class="pt-4 flex flex-wrap items-center gap-2 text-xs text-zinc-400">
+            <span class="px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.07]">After Effects Specialist</span>
+            <span class="px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.07]">Dynamic Captions</span>
+            <span class="px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.07]">Sound Design &amp; SFX</span>
+            <span class="px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.07]">Color Grading</span>
+          </div>
+        </div>
+
+        <!-- Right Interactive Timeline & Retention Card -->
+        <div class="lg:col-span-5">
+          <div class="glass-card rounded-3xl p-5 sm:p-6 relative overflow-hidden">
+            <!-- Top Window Bar -->
+            <div class="flex items-center justify-between pb-4 mb-5 border-b border-white/[0.07]">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-brand-500"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-white/20"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-white/20"></span>
+                <span class="ml-2 text-xs font-mono text-zinc-400">REEL_CUT_01.aep</span>
+              </div>
+              <span id="timecodeDisplay" class="text-xs font-mono font-semibold text-brand-300 bg-brand-500/15 px-2.5 py-1 rounded-md border border-brand-500/25">
+                00:00:03:12
+              </span>
+            </div>
+
+            <!-- Interactive Stage Preview -->
+            <div class="rounded-2xl bg-obsidian-950/90 border border-white/[0.07] p-4 mb-5">
+              <div class="flex items-center justify-between text-[11px] font-mono text-zinc-400 mb-3">
+                <span>RETENTION ARCHITECTURE</span>
+                <span id="activePhaseBadge" class="text-brand-300">0–3s HOOK LOCK</span>
+              </div>
+
+              <!-- Interactive Phase Selector Pills -->
+              <div class="grid grid-cols-3 gap-2 mb-4">
+                <button
+                  type="button"
+                  onclick="selectTimelinePhase('hook')"
+                  id="phaseBtn-hook"
+                  class="phase-btn px-2.5 py-2 rounded-xl text-xs font-medium bg-brand-600/30 border border-brand-400/50 text-white transition cursor-pointer"
+                >
+                  01. Hook (0–3s)
+                </button>
+                <button
+                  type="button"
+                  onclick="selectTimelinePhase('pacing')"
+                  id="phaseBtn-pacing"
+                  class="phase-btn px-2.5 py-2 rounded-xl text-xs font-medium bg-white/[0.03] border border-white/10 text-zinc-400 hover:text-white transition cursor-pointer"
+                >
+                  02. Rhythm &amp; Cut
+                </button>
+                <button
+                  type="button"
+                  onclick="selectTimelinePhase('polish')"
+                  id="phaseBtn-polish"
+                  class="phase-btn px-2.5 py-2 rounded-xl text-xs font-medium bg-white/[0.03] border border-white/10 text-zinc-400 hover:text-white transition cursor-pointer"
+                >
+                  03. SFX &amp; Grade
+                </button>
+              </div>
+
+              <!-- Dynamic Phase Description -->
+              <p id="phaseDescription" class="text-xs sm:text-sm text-zinc-300 leading-relaxed min-h-[3.5rem]">
+                Immediate visual pattern interrupt, kinetic opening caption, and crisp audio impact in the first 3 seconds to prevent scroll-away.
+              </p>
+            </div>
+
+            <!-- Stylized Multi-Track Timeline Tracks -->
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between text-[10px] font-mono text-zinc-500">
+                <span>V2 • MOTION &amp; CAPTIONS</span>
+                <span>60 FPS • 9:16</span>
+              </div>
+              <div class="grid grid-cols-12 gap-1.5 h-6">
+                <div class="col-span-3 rounded-md bg-brand-500/40 border border-brand-400/50 flex items-center px-2 text-[10px] font-mono text-brand-200 truncate">HOOK_TXT</div>
+                <div class="col-span-4 rounded-md bg-brand-700/30 border border-brand-500/30 flex items-center px-2 text-[10px] font-mono text-zinc-300 truncate">KINETIC_SUB</div>
+                <div class="col-span-5 rounded-md bg-brand-600/35 border border-brand-400/40 flex items-center px-2 text-[10px] font-mono text-brand-200 truncate">TRANSITION_FX</div>
+              </div>
+
+              <div class="flex items-center justify-between text-[10px] font-mono text-zinc-500 pt-1">
+                <span>A1 • BEAT-SYNC &amp; SFX</span>
+                <span>-6 dB MASTER</span>
+              </div>
+              <!-- Audio Waveform Bars -->
+              <div id="waveformContainer" class="h-10 rounded-xl bg-white/[0.02] border border-white/[0.06] px-3 flex items-center justify-between gap-1">
+                <!-- Populated by JS for crisp responsive bars -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ABOUT & PERSONAL DESCRIPTION SECTION -->
+    <section id="about" class="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20 border-t border-white/[0.06]">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+
+        <!-- Section Heading & Quick Facts -->
+        <div class="lg:col-span-5 space-y-5">
+          <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-brand-400">
+            <span class="w-6 h-px bg-brand-500"></span>
+            <span>About Me</span>
+          </div>
+          <h2 class="font-display font-bold text-3xl sm:text-4xl tracking-tight text-white">
+            Precision Editing Meets Visual Storytelling.
+          </h2>
+          <p class="text-sm text-zinc-400 leading-relaxed">
+            Grounded in graphic design fundamentals and specialized post-production workflows for modern vertical platforms.
+          </p>
+
+          <!-- Key Credentials Cards -->
+          <div class="grid grid-cols-2 gap-3 pt-2">
+            <div class="glass-card rounded-2xl p-4 col-span-2 border-brand-500/35">
+              <span class="block text-[11px] font-mono uppercase text-brand-400 mb-1">Featured Collaboration</span>
+              <span class="block text-sm font-semibold text-white">Worked with Bezangah Ahsan Ansari</span>
+              <span class="block text-xs text-zinc-400 mt-1">Short-form editing, retention pacing, dynamic captions &amp; motion polish</span>
+            </div>
+            <div class="glass-card rounded-2xl p-4">
+              <span class="block text-[11px] font-mono uppercase text-brand-400 mb-1">Languages</span>
+              <span class="block text-sm font-semibold text-white">Persian, English &amp; German</span>
+            </div>
+            <div class="glass-card rounded-2xl p-4">
+              <span class="block text-[11px] font-mono uppercase text-brand-400 mb-1">Base</span>
+              <span class="block text-sm font-semibold text-white">Jordan (District 3)</span>
+            </div>
+            <div class="glass-card rounded-2xl p-4 col-span-2">
+              <span class="block text-[11px] font-mono uppercase text-brand-400 mb-1">Education &amp; Foundation</span>
+              <span class="block text-sm font-semibold text-white">Editing Student (3rd Semester) — Univ. of Applied Science &amp; Tech (Unit 48)</span>
+              <span class="block text-xs text-zinc-400 mt-1">Diploma in Graphic Design — Artistic Vision &amp; Visual Composition</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Personal Description Cards (Directly from Resume) -->
+        <div class="lg:col-span-7 space-y-4">
+          <div class="glass-card rounded-2xl p-6 sm:p-7 space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-display font-semibold text-lg text-white">Short-Form &amp; Retention Focus</h3>
+              <span class="text-xs font-mono text-brand-300 bg-brand-500/10 px-2.5 py-1 rounded-full border border-brand-500/20">60s Mastery</span>
+            </div>
+            <p class="text-sm sm:text-base text-zinc-300 leading-relaxed">
+              Creative video editor dedicated exclusively to crafting and editing short-form content for <span class="text-white font-medium">YouTube Shorts</span>, <span class="text-white font-medium">Instagram Reels</span>, and <span class="text-white font-medium">TikTok</span>. I specialize in building compelling opening hooks within the first few seconds, controlling fast-paced rhythmic flow, and designing dynamic, interactive subtitles to boost audience retention, engagement rates, and total views.
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 sm:p-7 space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="font-display font-semibold text-lg text-white">Motion Design &amp; Post-Production</h3>
+              <span class="text-xs font-mono text-brand-300 bg-brand-500/10 px-2.5 py-1 rounded-full border border-brand-500/20">After Effects &amp; PS</span>
+            </div>
+            <p class="text-sm sm:text-base text-zinc-300 leading-relaxed">
+              With deep command of <span class="text-white font-medium">Adobe After Effects</span> and <span class="text-white font-medium">Adobe Photoshop</span>, my workflow integrates motion graphics, kinetic text animation, creative transitions, 3D visual composition, professional color grading and lighting correction, alongside atmospheric sound design and beat-synced cuts tailored to speech cadence.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CORE EXPERTISE BENTO GRID -->
+    <section id="expertise" class="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20 border-t border-white/[0.06]">
+      <div class="max-w-2xl mb-10 sm:mb-12">
+        <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-brand-400 mb-3">
+          <span class="w-6 h-px bg-brand-500"></span>
+          <span>Core Capabilities</span>
+        </div>
+        <h2 class="font-display font-bold text-3xl sm:text-4xl tracking-tight text-white">
+          Every Frame Engineered for Impact.
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Skill 1 -->
+        <div class="glass-card rounded-2xl p-6 space-y-3.5">
+          <div class="w-11 h-11 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-300">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="font-display font-semibold text-lg text-white">Hook &amp; Retention Engineering</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed">
+            Structuring high-impact opening seconds and maintaining relentless narrative momentum across 1-minute vertical formats so viewers watch through to the final frame.
+          </p>
+        </div>
+
+        <!-- Skill 2 -->
+        <div class="glass-card rounded-2xl p-6 space-y-3.5">
+          <div class="w-11 h-11 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-300">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+            </svg>
+          </div>
+          <h3 class="font-display font-semibold text-lg text-white">After Effects &amp; Motion Graphics</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed">
+            Specialized Adobe After Effects compositing, custom text animations, dynamic tone-matched subtitles, and seamless creative transitions.
+          </p>
+        </div>
+
+        <!-- Skill 3 -->
+        <div class="glass-card rounded-2xl p-6 space-y-3.5">
+          <div class="w-11 h-11 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-300">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+            </svg>
+          </div>
+          <h3 class="font-display font-semibold text-lg text-white">Sound Design &amp; Beat Sync</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed">
+            Atmospheric sound effects (SFX), clean vocal cuts, and precision pacing locked to musical beats and spoken rhythm.
+          </p>
+        </div>
+
+        <!-- Skill 4 -->
+        <div class="glass-card rounded-2xl p-6 space-y-3.5">
+          <div class="w-11 h-11 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-300">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+            </svg>
+          </div>
+          <h3 class="font-display font-semibold text-lg text-white">Color Grading &amp; 3D Composition</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed">
+            Professional color correction, lighting balance, and 3D visual composition powered by Adobe Photoshop and a formal graphic design background.
+          </p>
+        </div>
+
+        <!-- Skill 5 -->
+        <div class="glass-card rounded-2xl p-6 space-y-3.5 md:col-span-2 lg:col-span-2">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="w-11 h-11 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-300">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </div>
+            <span class="text-xs font-mono text-brand-300 bg-brand-500/10 px-3 py-1 rounded-full border border-brand-500/20 w-fit">
+              Instagram • TikTok • YouTube Shorts
+            </span>
+          </div>
+          <h3 class="font-display font-semibold text-lg text-white">Algorithm &amp; Trend Intelligence</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed">
+            Continuous monitoring of emerging audio tracks, visual styles, and distribution mechanics across Instagram, TikTok, and YouTube so every edit feels native, timely, and built for organic discovery.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE & CUSTOMIZABLE PORTFOLIO SHOWCASE -->
+    <section id="showcase" class="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20 border-t border-white/[0.06]">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 sm:mb-12">
+        <div>
+          <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-brand-400 mb-3">
+            <span class="w-6 h-px bg-brand-500"></span>
+            <span>Experience &amp; Reel Slots</span>
+          </div>
+          <h2 class="font-display font-bold text-3xl sm:text-4xl tracking-tight text-white">
+            Selected Verticals &amp; Portfolio Space
+          </h2>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2.5">
+          <a
+            href="https://drive.google.com/drive/folders/1cL2bBRByJIbJAJJCkclyeZa-DS50RTVg?usp=share_link"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-brand-600 hover:bg-brand-500 text-white shadow-lg shadow-brand-700/25 transition w-fit"
+          >
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.1">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+            </svg>
+            <span>Open Drive Folder</span>
+          </a>
+
+          <button
+            type="button"
+            onclick="openProjectModal()"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-brand-700/25 hover:bg-brand-700/40 text-brand-200 border border-brand-500/40 transition cursor-pointer w-fit"
+          >
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            <span>Add Your Reel Link</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Cards Grid (Featured Google Drive Portfolio card + 3 resume work verticals + user-added custom reel links) -->
+      <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5">
+        <!-- Rendered dynamically by JS -->
+      </div>
+    </section>
+
+    <!-- CONTACT & DIRECT PORTFOLIO DELIVERY SECTION -->
+    <section id="contact" class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 border-t border-white/[0.06]">
+      <div class="glass-card rounded-3xl p-7 sm:p-12 relative overflow-hidden">
+        <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full ambient-glow-1 pointer-events-none"></div>
+
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-6 space-y-5">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/15 border border-brand-500/30 text-xs font-mono text-brand-300">
+              <span>DIRECT QUALITY DELIVERY</span>
+            </div>
+            <h2 class="font-display font-bold text-3xl sm:text-4xl tracking-tight text-white">
+              Ready to Elevate Your Short-Form Content?
+            </h2>
+            <p class="text-sm sm:text-base text-zinc-300 leading-relaxed max-w-xl">
+              Selected portfolio video files are shared directly at full original bitrate so you can evaluate true image sharpness, editing rhythm, and sound design without social compression.
+            </p>
+            <div class="pt-1 flex flex-wrap items-center gap-3">
+              <a
+                href="https://drive.google.com/drive/folders/1cL2bBRByJIbJAJJCkclyeZa-DS50RTVg?usp=share_link"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-semibold bg-gradient-to-r from-brand-700 to-brand-500 hover:from-brand-600 hover:to-brand-400 text-white shadow-lg shadow-brand-700/25 transition"
+              >
+                <span>Browse Raw Samples on Google Drive</span>
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="lg:col-span-6 space-y-3">
+            <!-- Telegram Card -->
+            <div class="w-full p-4 rounded-2xl bg-obsidian-950/80 hover:bg-obsidian-900 border border-brand-500/30 hover:border-brand-400/70 flex items-center justify-between gap-3 transition group">
+              <a href="https://t.me/noah_xcx" target="_blank" rel="noopener noreferrer" class="min-w-0 flex-1 flex items-center gap-3 focus:outline-none">
+                <div class="w-9 h-9 rounded-xl bg-brand-600/20 border border-brand-500/30 flex items-center justify-center text-brand-300 shrink-0">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                  </svg>
+                </div>
+                <div class="min-w-0">
+                  <span class="block text-[11px] font-mono uppercase text-brand-400">Telegram (Fastest Reply)</span>
+                  <span class="block text-sm sm:text-base font-semibold text-white group-hover:text-brand-300 transition truncate">@noah_xcx</span>
+                </div>
+              </a>
+              <div class="flex items-center gap-2 shrink-0">
+                <a
+                  href="https://t.me/noah_xcx"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="px-2.5 py-1.5 rounded-lg text-xs font-mono bg-brand-600 text-white hover:bg-brand-500 transition"
+                >
+                  Open
+                </a>
+                <button
+                  type="button"
+                  onclick="copyText('@noah_xcx', 'Telegram handle copied: @noah_xcx')"
+                  class="px-2.5 py-1.5 rounded-lg text-xs font-mono bg-brand-600/20 text-brand-300 hover:bg-brand-600 hover:text-white transition cursor-pointer"
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+
+            <!-- Email Card -->
+            <div class="w-full p-4 rounded-2xl bg-obsidian-950/80 hover:bg-obsidian-900 border border-white/10 hover:border-brand-500/50 flex items-center justify-between gap-3 transition group">
+              <a href="mailto:hesentaqi@gmail.com" class="min-w-0 flex-1 focus:outline-none">
+                <span class="block text-[11px] font-mono uppercase text-zinc-400">Email Address</span>
+                <span class="block text-sm sm:text-base font-semibold text-white group-hover:text-brand-300 transition truncate">hesentaqi@gmail.com</span>
+              </a>
+              <button
+                type="button"
+                onclick="copyText('hesentaqi@gmail.com', 'Email copied to clipboard!')"
+                class="px-2.5 py-1.5 rounded-lg text-xs font-mono bg-brand-600/20 text-brand-300 hover:bg-brand-600 hover:text-white transition shrink-0 cursor-pointer"
+              >
+                Copy
+              </button>
+            </div>
+
+            <!-- Phone Card -->
+            <div class="w-full p-4 rounded-2xl bg-obsidian-950/80 hover:bg-obsidian-900 border border-white/10 hover:border-brand-500/50 flex items-center justify-between gap-3 transition group">
+              <a href="tel:09394150290" class="min-w-0 flex-1 focus:outline-none">
+                <span class="block text-[11px] font-mono uppercase text-zinc-400">Direct Contact</span>
+                <span class="block text-sm sm:text-base font-semibold text-white group-hover:text-brand-300 transition font-mono">0939 415 0290</span>
+              </a>
+              <button
+                type="button"
+                onclick="copyText('09394150290', 'Phone number copied to clipboard!')"
+                class="px-2.5 py-1.5 rounded-lg text-xs font-mono bg-brand-600/20 text-brand-300 hover:bg-brand-600 hover:text-white transition shrink-0 cursor-pointer"
+              >
+                Copy
+              </button>
+            </div>
+
+            <!-- Location Card -->
+            <div class="p-4 rounded-2xl bg-obsidian-950/50 border border-white/[0.07] flex items-center justify-between gap-3">
+              <div>
+                <span class="block text-[11px] font-mono uppercase text-zinc-400">Location</span>
+                <span class="block text-sm font-medium text-zinc-200">Jordan, District 3</span>
+              </div>
+              <span class="text-xs font-mono text-brand-400">Remote &amp; Local</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Minimal Footer -->
+  <footer class="relative z-10 border-t border-white/[0.06] py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+      <div class="flex items-center gap-2.5">
+        <span class="w-2 h-2 rounded-full bg-brand-500"></span>
+        <span class="font-medium text-zinc-300">Hassan Taghizadeh</span>
+        <span>•</span>
+        <span>Short-Form Video Editor</span>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="https://drive.google.com/drive/folders/1cL2bBRByJIbJAJJCkclyeZa-DS50RTVg?usp=share_link" target="_blank" rel="noopener noreferrer" class="text-brand-300 hover:text-white transition">Google Drive Portfolio</a>
+        <span>•</span>
+        <a href="https://t.me/noah_xcx" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-brand-300 transition">Telegram (@noah_xcx)</a>
+        <span>•</span>
+        <a href="mailto:hesentaqi@gmail.com" class="text-zinc-400 hover:text-brand-300 transition">hesentaqi@gmail.com</a>
+        <span>•</span>
+        <a href="tel:09394150290" class="text-zinc-400 hover:text-brand-300 font-mono transition">09394150290</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal: Edit Personal Bio -->
+  <div
+    id="bioModal"
+    class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="bioModalHeading"
+  >
+    <div class="w-full max-w-lg rounded-3xl bg-obsidian-900 border border-white/15 p-6 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 id="bioModalHeading" class="font-display font-bold text-lg text-white">Customize Hero Description</h3>
+        <button type="button" onclick="closeBioEditorModal()" class="text-zinc-400 hover:text-white p-1 cursor-pointer" aria-label="Close">
+          ✕
+        </button>
+      </div>
+      <p class="text-xs text-zinc-400">
+        Update your personal intro text below. Changes are saved automatically in your browser.
+      </p>
+      <textarea
+        id="bioTextarea"
+        rows="4"
+        class="w-full rounded-2xl bg-obsidian-950 border border-white/15 p-3.5 text-sm text-white focus:outline-none focus:border-brand-500"
+      ></textarea>
+      <div class="flex items-center justify-between pt-2">
+        <button
+          type="button"
+          onclick="resetDefaultBio()"
+          class="text-xs font-mono text-zinc-400 hover:text-brand-300 cursor-pointer"
+        >
+          Reset Default
+        </button>
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            onclick="closeBioEditorModal()"
+            class="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-300 hover:bg-white/5 cursor-pointer"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onclick="saveCustomBio()"
+            class="px-4 py-2 rounded-xl text-xs font-semibold bg-brand-600 hover:bg-brand-500 text-white cursor-pointer"
+          >
+            Save Bio
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add Custom Reel / Project Link -->
+  <div
+    id="projectModal"
+    class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="projectModalHeading"
+  >
+    <div class="w-full max-w-lg rounded-3xl bg-obsidian-900 border border-white/15 p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-4">
+        <h3 id="projectModalHeading" class="font-display font-bold text-lg text-white">Add Portfolio Reel / Sample</h3>
+        <button type="button" onclick="closeProjectModal()" class="text-zinc-400 hover:text-white p-1 cursor-pointer" aria-label="Close">
+          ✕
+        </button>
+      </div>
+
+      <form onsubmit="handleAddProject(event)" class="space-y-4">
+        <div>
+          <label for="projTag" class="block text-xs font-mono uppercase text-zinc-400 mb-1.5">Platform / Category</label>
+          <input
+            id="projTag"
+            type="text"
+            required
+            placeholder="e.g., Instagram Reel • Motion Edit"
+            class="w-full rounded-xl bg-obsidian-950 border border-white/15 px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500"
+          />
+        </div>
+
+        <div>
+          <label for="projTitle" class="block text-xs font-mono uppercase text-zinc-400 mb-1.5">Project Title</label>
+          <input
+            id="projTitle"
+            type="text"
+            required
+            placeholder="e.g., High-Retention Tech Hook Reel"
+            class="w-full rounded-xl bg-obsidian-950 border border-white/15 px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500"
+          />
+        </div>
+
+        <div>
+          <label for="projDesc" class="block text-xs font-mono uppercase text-zinc-400 mb-1.5">Editing Breakdown</label>
+          <textarea
+            id="projDesc"
+            rows="3"
+            required
+            placeholder="Describe the hook, After Effects motion work, captions, or sound design..."
+            class="w-full rounded-xl bg-obsidian-950 border border-white/15 px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500"
+          ></textarea>
+        </div>
+
+        <div>
+          <label for="projUrl" class="block text-xs font-mono uppercase text-zinc-400 mb-1.5">Video / Drive / Reel Link (Optional)</label>
+          <input
+            id="projUrl"
+            type="url"
+            placeholder="https://drive.google.com/... or https://instagram.com/..."
+            class="w-full rounded-xl bg-obsidian-950 border border-white/15 px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500"
+          />
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button
+            type="button"
+            onclick="closeProjectModal()"
+            class="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-300 hover:bg-white/5 cursor-pointer"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="px-5 py-2.5 rounded-xl text-xs font-semibold bg-brand-600 hover:bg-brand-500 text-white cursor-pointer"
+          >
+            Add to Showcase
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const GOOGLE_DRIVE_PORTFOLIO_URL =
+      'https://drive.google.com/drive/folders/1cL2bBRByJIbJAJJCkclyeZa-DS50RTVg?usp=share_link';
+
+    // Default Resume-Grounded Experience & Featured Google Drive Portfolio Cards
+    const DEFAULT_PROJECTS = [
+      {
+        id: 'drive-featured',
+        tag: 'Featured • Full Bitrate Vault',
+        title: 'Google Drive Showreel & Raw Samples',
+        desc: 'Browse full-resolution, uncompressed short-form edits directly on Google Drive—allowing you to evaluate true visual clarity, After Effects motion work, pacing, and sound design.',
+        url: GOOGLE_DRIVE_PORTFOLIO_URL,
+        ctaLabel: 'Open Google Drive Portfolio',
+        isDefault: true,
+        isFeatured: true,
+      },
+      {
+        id: 'collab-bezangah',
+        tag: 'Client Collaboration • Short-Form',
+        title: 'Worked with Bezangah Ahsan Ansari',
+        desc: 'Collaborated on short-form video production—delivering scroll-stopping opening hooks, tight rhythmic pacing, dynamic subtitles, and clean visual transitions tailored for audience retention.',
+        url: GOOGLE_DRIVE_PORTFOLIO_URL,
+        ctaLabel: 'View Work in Drive',
+        isDefault: true,
+      },
+      {
+        id: 'exp-1',
+        tag: 'YouTube Shorts & Reels',
+        title: 'Content Creators & YouTubers',
+        desc: 'Editing 1-minute vertical videos and short-form segments with powerful opening hooks, tight speech-paced cuts, and tailored sound effects engineered for maximum audience retention.',
+        url: GOOGLE_DRIVE_PORTFOLIO_URL,
+        ctaLabel: 'Watch Samples in Drive',
+        isDefault: true,
+      },
+      {
+        id: 'exp-2',
+        tag: 'Educational & Analytical',
+        title: 'Psychology Page Video Production',
+        desc: 'Crafting analytical and educational short-form videos with tone-matched pacing, crisp readable dynamic captions, and clean visual transitions to communicate nuanced ideas clearly.',
+        url: GOOGLE_DRIVE_PORTFOLIO_URL,
+        ctaLabel: 'Watch Samples in Drive',
+        isDefault: true,
+      },
+      {
+        id: 'exp-3',
+        tag: 'R&D • After Effects',
+        title: 'Viral Format & Motion Lab',
+        desc: 'Continuous personal video production testing emerging viral structures, modern After Effects motion techniques, audio trends, and platform engagement dynamics.',
+        url: GOOGLE_DRIVE_PORTFOLIO_URL,
+        ctaLabel: 'Watch Samples in Drive',
+        isDefault: true,
+      },
+    ];
+
+    const DEFAULT_BIO =
+      "I’m Hassan Taghizadeh, a specialized short-form video editor and motion designer. I engineer magnetic opening hooks in the first seconds, dynamic beat-matched pacing, and interactive subtitles designed to maximize viewer retention, engagement, and organic reach.";
+
+    const STORAGE_PROJECTS_KEY = 'ht_dark_portfolio_projects_v1';
+    const STORAGE_BIO_KEY = 'ht_dark_portfolio_bio_v1';
+
+    let customProjects = [];
+    let toastTimer = null;
+
+    // Interactive Timeline Preview Data
+    const TIMELINE_PHASES = {
+      hook: {
+        badge: '0–3s HOOK LOCK',
+        timecode: '00:00:02:18',
+        desc: 'Immediate visual pattern interrupt, kinetic opening caption, and crisp audio impact in the first 3 seconds to prevent scroll-away.',
+      },
+      pacing: {
+        badge: 'BEAT-SYNC FLOW',
+        timecode: '00:00:24:06',
+        desc: 'Tight vocal-cadence cuts paired with dynamic After Effects text animations and zoom/whip transitions aligned to musical beats.',
+      },
+      polish: {
+        badge: 'GRADE & SFX MASTER',
+        timecode: '00:00:58:22',
+        desc: 'Balanced color grading, atmospheric risers and whooshes, and clean audio leveling for full-resolution direct delivery.',
+      },
+    };
+
+    function selectTimelinePhase(phaseKey) {
+      const data = TIMELINE_PHASES[phaseKey];
+      if (!data) return;
+
+      document.getElementById('activePhaseBadge').textContent = data.badge;
+      document.getElementById('timecodeDisplay').textContent = data.timecode;
+      document.getElementById('phaseDescription').textContent = data.desc;
+
+      document.querySelectorAll('.phase-btn').forEach((btn) => {
+        btn.classList.remove('bg-brand-600/30', 'border-brand-400/50', 'text-white');
+        btn.classList.add('bg-white/[0.03]', 'border-white/10', 'text-zinc-400');
+      });
+
+      const activeBtn = document.getElementById(`phaseBtn-${phaseKey}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-white/[0.03]', 'border-white/10', 'text-zinc-400');
+        activeBtn.classList.add('bg-brand-600/30', 'border-brand-400/50', 'text-white');
+      }
+
+      renderWaveform(phaseKey);
+    }
+
+    function renderWaveform(seed = 'hook') {
+      const container = document.getElementById('waveformContainer');
+      if (!container) return;
+
+      const heightsMap = {
+        hook: [35, 85, 95, 60, 45, 90, 75, 40, 65, 80, 50, 70, 90, 55, 40, 75, 85, 60, 45, 70, 50, 80, 65, 40],
+        pacing: [60, 75, 50, 90, 85, 45, 95, 70, 55, 88, 92, 60, 48, 84, 76, 52, 90, 68, 74, 86, 58, 72, 80, 50],
+        polish: [50, 65, 78, 82, 70, 88, 92, 80, 68, 75, 85, 90, 76, 64, 82, 94, 86, 72, 66, 80, 88, 74, 62, 54],
+      };
+
+      const bars = heightsMap[seed] || heightsMap.hook;
+      container.innerHTML = bars
+        .map(
+          (h, idx) => `
+          <span
+            class="wave-bar flex-1 rounded-full ${idx < 6 ? 'bg-brand-400' : 'bg-brand-600/65'}"
+            style="height: ${h}%;"
+          ></span>
+        `
+        )
+        .join('');
+    }
+
+    // Toast Feedback
+    function showToast(msg) {
+      const banner = document.getElementById('toastBanner');
+      const text = document.getElementById('toastMessage');
+      if (!banner || !text) return;
+
+      text.textContent = msg;
+      banner.classList.remove('hidden');
+      banner.classList.add('flex');
+
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        banner.classList.add('hidden');
+        banner.classList.remove('flex');
+      }, 3000);
+    }
+
+    // Copy helper with execCommand fallback
+    function copyText(value, successMsg) {
+      const temp = document.createElement('textarea');
+      temp.value = value;
+      temp.setAttribute('readonly', '');
+      temp.style.position = 'fixed';
+      temp.style.opacity = '0';
+      document.body.appendChild(temp);
+      temp.select();
+
+      try {
+        document.execCommand('copy');
+        showToast(successMsg);
+      } catch {
+        showToast('Copied: ' + value);
+      }
+      document.body.removeChild(temp);
+    }
+
+    // Escape HTML safely
+    function escapeHtml(str) {
+      if (typeof str !== 'string') return '';
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function sanitizeUrl(url) {
+      if (!url) return '';
+      try {
+        const parsed = new URL(url.trim());
+        return parsed.protocol === 'https:' || parsed.protocol === 'http:' ? parsed.href : '';
+      } catch {
+        return '';
+      }
+    }
+
+    // Load & Render Projects
+    function loadSavedData() {
+      try {
+        const rawProj = localStorage.getItem(STORAGE_PROJECTS_KEY);
+        customProjects = rawProj ? JSON.parse(rawProj) : [];
+        if (!Array.isArray(customProjects)) customProjects = [];
+      } catch {
+        customProjects = [];
+      }
+
+      try {
+        const savedBio = localStorage.getItem(STORAGE_BIO_KEY);
+        if (savedBio && savedBio.trim()) {
+          document.getElementById('heroBioDisplay').textContent = savedBio.trim();
+        }
+      } catch {
+        // Keep default bio
+      }
+    }
+
+    function renderProjects() {
+      const grid = document.getElementById('projectsGrid');
+      if (!grid) return;
+
+      const allItems = [...customProjects, ...DEFAULT_PROJECTS];
+
+      grid.innerHTML = allItems
+        .map(
+          (item) => `
+          <article class="glass-card rounded-2xl p-6 flex flex-col justify-between gap-5 ${
+            item.isFeatured ? 'border-brand-500/45 bg-gradient-to-br from-brand-900/20 via-white/[0.03] to-transparent' : ''
+          }">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono ${
+                  item.isFeatured
+                    ? 'bg-brand-500/25 text-brand-200 border border-brand-400/40'
+                    : 'bg-brand-500/15 text-brand-300 border border-brand-500/25'
+                }">
+                  <span class="w-1.5 h-1.5 rounded-full bg-brand-400"></span>
+                  ${escapeHtml(item.tag)}
+                </span>
+                ${
+                  !item.isDefault
+                    ? `<button type="button" onclick="deleteCustomProject('${escapeHtml(item.id)}')" class="text-xs font-mono text-zinc-500 hover:text-red-400 transition cursor-pointer">Remove</button>`
+                    : `<span class="text-[11px] font-mono text-zinc-500">${item.isFeatured ? 'DRIVE' : '09:16'}</span>`
+                }
+              </div>
+
+              <h3 class="font-display font-bold text-lg text-white leading-snug">
+                ${escapeHtml(item.title)}
+              </h3>
+
+              <p class="text-sm text-zinc-400 leading-relaxed">
+                ${escapeHtml(item.desc)}
+              </p>
+            </div>
+
+            <div class="pt-3 border-t border-white/[0.06] flex items-center justify-between">
+              ${
+                item.url
+                  ? `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-300 hover:text-white transition">
+                       <span>${escapeHtml(item.ctaLabel || 'Watch Sample')}</span>
+                       <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                       </svg>
+                     </a>`
+                  : `<a href="#contact" class="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-300 hover:text-brand-300 transition">
+                       <span>Request Direct File →</span>
+                     </a>`
+              }
+              <span class="text-[11px] font-mono text-zinc-500">HT POST</span>
+            </div>
+          </article>
+        `
+        )
+        .join('');
+    }
+
+    // Bio Editor Modal Handlers
+    function openBioEditorModal() {
+      const modal = document.getElementById('bioModal');
+      const textarea = document.getElementById('bioTextarea');
+      textarea.value = document.getElementById('heroBioDisplay').textContent.trim();
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeBioEditorModal() {
+      const modal = document.getElementById('bioModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function saveCustomBio() {
+      const val = document.getElementById('bioTextarea').value.trim();
+      if (!val) return;
+      document.getElementById('heroBioDisplay').textContent = val;
+      try {
+        localStorage.setItem(STORAGE_BIO_KEY, val);
+      } catch {}
+      closeBioEditorModal();
+      showToast('Bio description updated!');
+    }
+
+    function resetDefaultBio() {
+      document.getElementById('bioTextarea').value = DEFAULT_BIO;
+      document.getElementById('heroBioDisplay').textContent = DEFAULT_BIO;
+      try {
+        localStorage.removeItem(STORAGE_BIO_KEY);
+      } catch {}
+      closeBioEditorModal();
+      showToast('Restored default resume bio.');
+    }
+
+    // Project Modal Handlers
+    function openProjectModal() {
+      const modal = document.getElementById('projectModal');
+      document.getElementById('projTag').value = '';
+      document.getElementById('projTitle').value = '';
+      document.getElementById('projDesc').value = '';
+      document.getElementById('projUrl').value = '';
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeProjectModal() {
+      const modal = document.getElementById('projectModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function handleAddProject(e) {
+      e.preventDefault();
+      const tag = document.getElementById('projTag').value.trim();
+      const title = document.getElementById('projTitle').value.trim();
+      const desc = document.getElementById('projDesc').value.trim();
+      const url = sanitizeUrl(document.getElementById('projUrl').value.trim());
+
+      if (!tag || !title || !desc) return;
+
+      customProjects.unshift({
+        id: 'custom-' + Date.now(),
+        tag,
+        title,
+        desc,
+        url,
+        isDefault: false,
+      });
+
+      try {
+        localStorage.setItem(STORAGE_PROJECTS_KEY, JSON.stringify(customProjects));
+      } catch {}
+
+      renderProjects();
+      closeProjectModal();
+      showToast('Added reel to your showcase!');
+    }
+
+    function deleteCustomProject(id) {
+      customProjects = customProjects.filter((p) => p.id !== id);
+      try {
+        localStorage.setItem(STORAGE_PROJECTS_KEY, JSON.stringify(customProjects));
+      } catch {}
+      renderProjects();
+      showToast('Removed custom project.');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeBioEditorModal();
+        closeProjectModal();
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSavedData();
+      renderWaveform('hook');
+      renderProjects();
+    });
+  </script>
+</body>
+</html>
