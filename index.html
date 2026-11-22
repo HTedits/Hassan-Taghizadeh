@@ -300,17 +300,6 @@
             >
               ارتباط و سفارش پروژه
             </a>
-
-            <button
-              type="button"
-              onclick="openBioEditorModal()"
-              class="inline-flex items-center justify-center gap-1.5 px-3.5 py-3.5 rounded-2xl text-xs font-medium text-zinc-400 hover:text-brand-300 hover:bg-white/[0.03] border border-transparent hover:border-white/10 transition cursor-pointer"
-            >
-              <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-              <span data-i18n="heroEditBioBtn">ویرایش معرفی‌نامه</span>
-            </button>
           </div>
 
           <!-- Compact Discipline Tags -->
@@ -613,15 +602,6 @@
             </svg>
             <span data-i18n="showcaseOpenDriveBtn">باز کردن پوشه گوگل درایو</span>
           </a>
-
-          <button
-            type="button"
-            onclick="openProjectModal()"
-            data-i18n="showcaseAddReelBtn"
-            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-brand-700/25 hover:bg-brand-700/40 text-brand-200 border border-brand-500/40 transition cursor-pointer w-fit"
-          >
-            + افزودن لینک نمونه‌کار
-          </button>
         </div>
       </div>
 
@@ -773,154 +753,14 @@
   </footer>
   </div>
 
-  <!-- Modal: Edit Personal Bio -->
-  <div
-    id="bioModal"
-    class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="bioModalHeading"
-  >
-    <div class="w-full max-w-lg rounded-3xl bg-obsidian-900 border border-white/15 p-6 shadow-2xl space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 id="bioModalHeading" data-i18n="bioModalTitle" class="font-display font-bold text-lg text-white">ویرایش متن معرفی‌نامه</h3>
-        <button type="button" onclick="closeBioEditorModal()" class="text-zinc-400 hover:text-white p-1 cursor-pointer" aria-label="Close">
-          ✕
-        </button>
-      </div>
-      <p data-i18n="bioModalDesc" class="text-xs text-zinc-400 leading-relaxed">
-        متن معرفی بالای صفحه را به دلخواه خود ویرایش کنید. تغییرات به‌صورت خودکار در مرورگر شما ذخیره می‌شوند.
-      </p>
-      <textarea
-        id="bioTextarea"
-        rows="5"
-        class="w-full rounded-2xl bg-obsidian-950 border border-white/15 p-3.5 text-sm text-white leading-relaxed focus:outline-none focus:border-brand-500"
-      ></textarea>
-      <div class="flex items-center justify-between pt-2">
-        <button
-          type="button"
-          onclick="resetDefaultBio()"
-          data-i18n="bioModalReset"
-          class="text-xs font-medium text-zinc-400 hover:text-brand-300 cursor-pointer"
-        >
-          بازگردانی متن پیش‌فرض
-        </button>
-        <div class="flex items-center gap-2">
-          <button
-            type="button"
-            onclick="closeBioEditorModal()"
-            data-i18n="modalCancel"
-            class="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-300 hover:bg-white/5 cursor-pointer"
-          >
-            انصراف
-          </button>
-          <button
-            type="button"
-            onclick="saveCustomBio()"
-            data-i18n="bioModalSave"
-            class="px-4 py-2 rounded-xl text-xs font-semibold bg-brand-600 hover:bg-brand-500 text-white cursor-pointer"
-          >
-            ذخیره تغییرات
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal: Add Custom Reel / Project Link -->
-  <div
-    id="projectModal"
-    class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="projectModalHeading"
-  >
-    <div class="w-full max-w-lg rounded-3xl bg-obsidian-900 border border-white/15 p-6 shadow-2xl">
-      <div class="flex items-center justify-between mb-4">
-        <h3 id="projectModalHeading" data-i18n="projModalTitle" class="font-display font-bold text-lg text-white">افزودن لینک نمونه‌کار جدید</h3>
-        <button type="button" onclick="closeProjectModal()" class="text-zinc-400 hover:text-white p-1 cursor-pointer" aria-label="Close">
-          ✕
-        </button>
-      </div>
-
-      <form onsubmit="handleAddProject(event)" class="space-y-4">
-        <div>
-          <label for="projTag" data-i18n="projModalTagLabel" class="block text-xs font-medium text-zinc-400 mb-1.5">پلتفرم یا دسته‌بندی</label>
-          <input
-            id="projTag"
-            type="text"
-            required
-            placeholder="مثلاً: اینستاگرام ریلز • موشن‌گرافیک"
-            class="w-full rounded-xl bg-obsidian-950 border border-white/15 px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500"
-          />
-        </div>
-
-        <div>
-          <label for="projTitle" data-i18n="projModalNameLabel" class="block text-xs font-medium text-zinc-400 mb-1.5">عنوان پروژه</label>
-          <input
-            id="projTitle"
-            type="text"
-            required
-            placeholder="مثلاً: تدوین ریلز آموزشی با هوک سریع"
-            class="w-full rounded-xl bg-obsidian-950 border border-white/15 px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500"
-          />
-        </div>
-
-        <div>
-          <label for="projDesc" data-i18n="projModalDescLabel" class="block text-xs font-medium text-zinc-400 mb-1.5">توضیحات تدوین و اجرا</label>
-          <textarea
-            id="projDesc"
-            rows="3"
-            required
-            placeholder="توضیح کوتاه درباره هوک، موشن گرافیک افتر افکت، زیرنویس یا طراحی صدا..."
-            class="w-full rounded-xl bg-obsidian-950 border border-white/15 px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500"
-          ></textarea>
-        </div>
-
-        <div>
-          <label for="projUrl" data-i18n="projModalUrlLabel" class="block text-xs font-medium text-zinc-400 mb-1.5">لینک ویدیو یا گوگل درایو (اختیاری)</label>
-          <input
-            id="projUrl"
-            type="url"
-            dir="ltr"
-            placeholder="https://drive.google.com/... or https://instagram.com/..."
-            class="w-full rounded-xl bg-obsidian-950 border border-white/15 px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500 text-left"
-          />
-        </div>
-
-        <div class="flex items-center justify-end gap-2 pt-2">
-          <button
-            type="button"
-            onclick="closeProjectModal()"
-            data-i18n="modalCancel"
-            class="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-300 hover:bg-white/5 cursor-pointer"
-          >
-            انصراف
-          </button>
-          <button
-            type="submit"
-            data-i18n="projModalSubmit"
-            class="px-5 py-2.5 rounded-xl text-xs font-semibold bg-brand-600 hover:bg-brand-500 text-white cursor-pointer"
-          >
-            افزودن به ویترین
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <script>
     const GOOGLE_DRIVE_PORTFOLIO_URL =
       'https://drive.google.com/drive/folders/1cL2bBRByJIbJAJJCkclyeZa-DS50RTVg?usp=share_link';
 
     const STORAGE_LANG_KEY = 'ht_portfolio_lang_v1';
-    const STORAGE_PROJECTS_KEY = 'ht_bilingual_projects_v1';
-    const STORAGE_BIO_FA_KEY = 'ht_portfolio_bio_fa_v1';
-    const STORAGE_BIO_EN_KEY = 'ht_portfolio_bio_en_v1';
 
     let currentLang = 'fa';
     let activePhaseKey = 'hook';
-    let customProjects = [];
     let toastTimer = null;
     let langTransitionTimer = null;
 
@@ -943,7 +783,6 @@
           'تدوینگر خلاق با تمرکز اختصاصی بر ساخت و ویرایش ویدیوهای کوتاه برای اینستاگرام ریلز، یوتیوب شورتس و تیک‌تاک. توانمند در خلق قلاب‌های آغازین (Hook) جذاب در ثانیه‌های نخست، کنترل ریتم تند و پویای ویدیو، کات‌های هماهنگ با ضرباهنگ و طراحی زیرنویس‌های داینامیک و تعاملی به هدف افزایش نرخ نگهداشت مخاطب (Retention)، ارتقای انگیجمنت و رشد بازدیدها.',
         heroPrimaryCta: 'آرشیو کامل در گوگل درایو',
         heroSecondaryCta: 'ارتباط و سفارش پروژه',
-        heroEditBioBtn: 'ویرایش معرفی‌نامه',
 
         tagAe: 'تخصصی افتر افکت (After Effects)',
         tagSubs: 'زیرنویس داینامیک و تعاملی',
@@ -1003,7 +842,6 @@
         showcaseKicker: 'سوابق کاری و ویترین نمونه‌کارها',
         showcaseHeading: 'پروژه‌های منتخب و فضاهای تخصصی',
         showcaseOpenDriveBtn: 'باز کردن پوشه گوگل درایو',
-        showcaseAddReelBtn: '+ افزودن لینک نمونه‌کار',
 
         contactBadge: 'ارسال مستقیم با کیفیت اصلی',
         contactHeading: 'آماده ارتقای کیفیت ویدیوهای کوتاه شما هستم',
@@ -1026,23 +864,6 @@
         footerDrive: 'گوگل درایو',
         footerTelegram: 'تلگرام',
 
-        bioModalTitle: 'ویرایش متن معرفی‌نامه',
-        bioModalDesc: 'متن معرفی بالای صفحه را به دلخواه خود ویرایش کنید. تغییرات به‌صورت خودکار در مرورگر شما ذخیره می‌شوند.',
-        bioModalReset: 'بازگردانی متن پیش‌فرض',
-        bioModalSave: 'ذخیره تغییرات',
-        modalCancel: 'انصراف',
-
-        projModalTitle: 'افزودن لینک نمونه‌کار جدید',
-        projModalTagLabel: 'پلتفرم یا دسته‌بندی',
-        projModalTagPlaceholder: 'مثلاً: اینستاگرام ریلز • موشن‌گرافیک',
-        projModalNameLabel: 'عنوان پروژه',
-        projModalNamePlaceholder: 'مثلاً: تدوین ریلز آموزشی با هوک سریع',
-        projModalDescLabel: 'توضیحات تدوین و اجرا',
-        projModalDescPlaceholder: 'توضیح کوتاه درباره هوک، موشن گرافیک افتر افکت، زیرنویس یا طراحی صدا...',
-        projModalUrlLabel: 'لینک ویدیو یا گوگل درایو (اختیاری)',
-        projModalSubmit: 'افزودن به ویترین',
-
-        cardDelete: 'حذف',
         cardViewDefault: 'مشاهده نمونه‌کار',
         cardRequestFile: 'درخواست فایل با کیفیت اصلی ←',
 
@@ -1050,10 +871,6 @@
         toastEmailCopied: 'ایمیل کپی شد: hesentaqi@gmail.com',
         toastPhoneCopied: 'شماره تماس کپی شد: 09394150290',
         toastTelegramCopied: 'آیدی تلگرام کپی شد: @noah_xcx',
-        toastBioSaved: 'متن معرفی‌نامه به‌روزرسانی شد!',
-        toastBioReset: 'متن پیش‌فرض بازگردانی شد.',
-        toastProjAdded: 'نمونه‌کار جدید به ویترین اضافه شد!',
-        toastProjDeleted: 'نمونه‌کار سفارشی حذف شد.',
       },
 
       en: {
@@ -1073,7 +890,6 @@
           'Creative video editor dedicated to crafting high-retention short-form content for Instagram Reels, YouTube Shorts, and TikTok. Specialized in designing scroll-stopping opening hooks in the first seconds, dynamic fast-paced rhythm, beat-matched cuts, and interactive kinetic subtitles engineered to maximize audience retention, engagement, and organic reach.',
         heroPrimaryCta: 'Google Drive Archive',
         heroSecondaryCta: 'Get in Touch',
-        heroEditBioBtn: 'Edit Bio',
 
         tagAe: 'After Effects Specialist',
         tagSubs: 'Dynamic & Interactive Captions',
@@ -1133,7 +949,6 @@
         showcaseKicker: 'Experience & Portfolio Showcase',
         showcaseHeading: 'Selected Collaborations & Editing Verticals',
         showcaseOpenDriveBtn: 'Open Google Drive Folder',
-        showcaseAddReelBtn: '+ Add Your Reel Link',
 
         contactBadge: 'Direct Full-Resolution Delivery',
         contactHeading: 'Ready to elevate your short-form content',
@@ -1156,23 +971,6 @@
         footerDrive: 'Google Drive',
         footerTelegram: 'Telegram',
 
-        bioModalTitle: 'Edit Personal Bio',
-        bioModalDesc: 'Customize your hero introduction below. Changes are automatically saved in your browser.',
-        bioModalReset: 'Reset to Default',
-        bioModalSave: 'Save Changes',
-        modalCancel: 'Cancel',
-
-        projModalTitle: 'Add Custom Showcase Link',
-        projModalTagLabel: 'Platform or Category',
-        projModalTagPlaceholder: 'e.g., Instagram Reels • Motion Graphics',
-        projModalNameLabel: 'Project Title',
-        projModalNamePlaceholder: 'e.g., High-Retention Educational Reel',
-        projModalDescLabel: 'Editing & Production Notes',
-        projModalDescPlaceholder: 'Briefly describe the hook, After Effects motion, dynamic captions, or sound design...',
-        projModalUrlLabel: 'Video or Google Drive Link (Optional)',
-        projModalSubmit: 'Add to Showcase',
-
-        cardDelete: 'Remove',
         cardViewDefault: 'Watch Sample',
         cardRequestFile: 'Request Original File →',
 
@@ -1180,10 +978,6 @@
         toastEmailCopied: 'Email copied: hesentaqi@gmail.com',
         toastPhoneCopied: 'Phone copied: 09394150290',
         toastTelegramCopied: 'Telegram handle copied: @noah_xcx',
-        toastBioSaved: 'Bio updated successfully!',
-        toastBioReset: 'Default bio restored.',
-        toastProjAdded: 'Custom showcase item added!',
-        toastProjDeleted: 'Custom showcase item removed.',
       },
     };
 
@@ -1372,40 +1166,14 @@
       });
 
       // Apply directional flow to main text containers while keeping grid cards stationary
-      document.querySelectorAll('main section, footer, #bioModal, #projectModal').forEach((block) => {
+      document.querySelectorAll('main section, footer').forEach((block) => {
         block.setAttribute('dir', textDir);
       });
 
-      // Update Hero Bio (use saved custom bio for that language if present, otherwise default)
-      const bioStorageKey = currentLang === 'fa' ? STORAGE_BIO_FA_KEY : STORAGE_BIO_EN_KEY;
-      let savedBio = '';
-      try {
-        savedBio = localStorage.getItem(bioStorageKey) || '';
-      } catch {}
+      // Set Locked Hero Bio for Active Language
       const heroBioEl = document.getElementById('heroBioDisplay');
-      heroBioEl.textContent = savedBio.trim() || t('heroDefaultBio');
+      heroBioEl.textContent = t('heroDefaultBio');
       heroBioEl.setAttribute('dir', textDir);
-
-      // Update Modal Placeholders & Textarea direction
-      const projTagInput = document.getElementById('projTag');
-      const projTitleInput = document.getElementById('projTitle');
-      const projDescInput = document.getElementById('projDesc');
-      const bioTextarea = document.getElementById('bioTextarea');
-      if (projTagInput) {
-        projTagInput.placeholder = t('projModalTagPlaceholder');
-        projTagInput.setAttribute('dir', textDir);
-      }
-      if (projTitleInput) {
-        projTitleInput.placeholder = t('projModalNamePlaceholder');
-        projTitleInput.setAttribute('dir', textDir);
-      }
-      if (projDescInput) {
-        projDescInput.placeholder = t('projModalDescPlaceholder');
-        projDescInput.setAttribute('dir', textDir);
-      }
-      if (bioTextarea) {
-        bioTextarea.setAttribute('dir', textDir);
-      }
 
       // Refresh Interactive Timeline & Showcase Cards
       selectTimelinePhase(activePhaseKey);
@@ -1556,7 +1324,7 @@
       }
     }
 
-    // Load Saved Language & Custom Projects
+    // Load Saved Language Preference
     function loadSavedData() {
       try {
         const savedLang = localStorage.getItem(STORAGE_LANG_KEY);
@@ -1564,26 +1332,17 @@
           currentLang = savedLang;
         }
       } catch {}
-
-      try {
-        const rawProj = localStorage.getItem(STORAGE_PROJECTS_KEY);
-        customProjects = rawProj ? JSON.parse(rawProj) : [];
-        if (!Array.isArray(customProjects)) customProjects = [];
-      } catch {
-        customProjects = [];
-      }
     }
 
-    // Render Bilingual Showcase Cards
+    // Render Read-Only Bilingual Showcase Cards
     function renderProjects() {
       const grid = document.getElementById('projectsGrid');
       if (!grid) return;
 
-      const normalizedDefaults = DEFAULT_PROJECTS.map((item) => {
+      const allItems = DEFAULT_PROJECTS.map((item) => {
         const localized = item[currentLang] || item.fa;
         return {
           id: item.id,
-          isDefault: true,
           isFeatured: Boolean(item.isFeatured),
           url: item.url,
           tag: localized.tag,
@@ -1592,8 +1351,6 @@
           ctaLabel: localized.ctaLabel,
         };
       });
-
-      const allItems = [...customProjects, ...normalizedDefaults];
 
       grid.innerHTML = allItems
         .map(
@@ -1611,11 +1368,7 @@
                   <span class="w-1.5 h-1.5 rounded-full bg-brand-400"></span>
                   ${escapeHtml(item.tag)}
                 </span>
-                ${
-                  !item.isDefault
-                    ? `<button type="button" onclick="deleteCustomProject('${escapeHtml(item.id)}')" class="text-xs font-medium text-zinc-500 hover:text-red-400 transition cursor-pointer">${escapeHtml(t('cardDelete'))}</button>`
-                    : `<span dir="ltr" class="text-[11px] font-mono text-zinc-500">${item.isFeatured ? 'DRIVE' : '09:16'}</span>`
-                }
+                <span dir="ltr" class="text-[11px] font-mono text-zinc-500">${item.isFeatured ? 'DRIVE' : '09:16'}</span>
               </div>
 
               <h3 class="font-display font-bold text-lg text-white leading-snug">
@@ -1647,105 +1400,6 @@
         )
         .join('');
     }
-
-    // Bio Editor Modal Handlers
-    function openBioEditorModal() {
-      const modal = document.getElementById('bioModal');
-      const textarea = document.getElementById('bioTextarea');
-      textarea.value = document.getElementById('heroBioDisplay').textContent.trim();
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-
-    function closeBioEditorModal() {
-      const modal = document.getElementById('bioModal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-
-    function saveCustomBio() {
-      const val = document.getElementById('bioTextarea').value.trim();
-      if (!val) return;
-      document.getElementById('heroBioDisplay').textContent = val;
-      const key = currentLang === 'fa' ? STORAGE_BIO_FA_KEY : STORAGE_BIO_EN_KEY;
-      try {
-        localStorage.setItem(key, val);
-      } catch {}
-      closeBioEditorModal();
-      showToast(t('toastBioSaved'));
-    }
-
-    function resetDefaultBio() {
-      const defaultText = t('heroDefaultBio');
-      document.getElementById('bioTextarea').value = defaultText;
-      document.getElementById('heroBioDisplay').textContent = defaultText;
-      const key = currentLang === 'fa' ? STORAGE_BIO_FA_KEY : STORAGE_BIO_EN_KEY;
-      try {
-        localStorage.removeItem(key);
-      } catch {}
-      closeBioEditorModal();
-      showToast(t('toastBioReset'));
-    }
-
-    // Project Modal Handlers
-    function openProjectModal() {
-      const modal = document.getElementById('projectModal');
-      document.getElementById('projTag').value = '';
-      document.getElementById('projTitle').value = '';
-      document.getElementById('projDesc').value = '';
-      document.getElementById('projUrl').value = '';
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-
-    function closeProjectModal() {
-      const modal = document.getElementById('projectModal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-
-    function handleAddProject(e) {
-      e.preventDefault();
-      const tag = document.getElementById('projTag').value.trim();
-      const title = document.getElementById('projTitle').value.trim();
-      const desc = document.getElementById('projDesc').value.trim();
-      const url = sanitizeUrl(document.getElementById('projUrl').value.trim());
-
-      if (!tag || !title || !desc) return;
-
-      customProjects.unshift({
-        id: 'custom-' + Date.now(),
-        tag,
-        title,
-        desc,
-        url,
-        isDefault: false,
-      });
-
-      try {
-        localStorage.setItem(STORAGE_PROJECTS_KEY, JSON.stringify(customProjects));
-      } catch {}
-
-      renderProjects();
-      closeProjectModal();
-      showToast(t('toastProjAdded'));
-    }
-
-    function deleteCustomProject(id) {
-      customProjects = customProjects.filter((p) => p.id !== id);
-      try {
-        localStorage.setItem(STORAGE_PROJECTS_KEY, JSON.stringify(customProjects));
-      } catch {}
-      renderProjects();
-      showToast(t('toastProjDeleted'));
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeBioEditorModal();
-        closeProjectModal();
-      }
-    });
 
     window.addEventListener('DOMContentLoaded', () => {
       loadSavedData();
